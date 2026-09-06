@@ -53,6 +53,11 @@ jobs:
       - name: 인쇄용 카드가 플래시카드와 일치하는지 검사
         run: ./scripts/make-flashcard-sheets.py --check
 
+      # 키워드 시트는 손으로 뽑은 요약이라 재생성 비교가 안 된다. 대신 문항이 빠졌는지와
+      # ✅ 로 적은 케이스 id 가 실제로 있는지만 본다 — 없는 id 를 적으면 "검증한 척"이다.
+      - name: 키워드 시트 누락·근거 id 검사
+        run: ./scripts/check-keyword-sheets.py --quiet
+
   # 2판(Optimizing Cloud Native Java) 명제 19건 — JDK 25 전용, 인프라 불필요.
   # setup-java 가 JAVA_HOME_25_X64 를 내보내고, Gradle 툴체인이 그 경로를 후보로 쓴다(fromEnv).
   cloudnative:

@@ -17,7 +17,7 @@ CI 는 "빌드가 된다"가 아니라 **"명제가 이 환경에서도 재현�
 
 | 잡 | 언제 | 무엇 | 인프라 |
 |---|---|---|---|
-| `docs` | 커밋마다 | **문서 링크·앵커·도달성 검사**(`scripts/check-links.py`) + **플래시카드 최신성 검사**(`scripts/make-flashcards.py --check`) — 몇 초 | 없음 |
+| `docs` | 커밋마다 | **문서 링크·앵커·도달성 검사**(`scripts/check-links.py`) + **플래시카드 최신성 검사**(`scripts/make-flashcards.py --check`) + **키워드 시트 누락·근거 id 검사**(`scripts/check-keyword-sheets.py`) — 몇 초 | 없음 |
 | `tutorial` | 커밋마다 | java-tutorial 54건 · spring-tutorial 52건 | 없음 |
 | `js-tutorial` | 커밋마다 | javascript-tutorial 58건 — `setup-node` 로 Node 22, **npm 의존이 0 이라 install 단계 없음** | 없음 |
 | `cloudnative` | 커밋마다 | 2판 명제 19건 — `setup-java` 로 **JDK 25** 를 깔고 그 모듈만 | 없음 |
@@ -74,6 +74,25 @@ Part 파일 33개가 디렉터리 링크로만 걸려 있어 문서에서 닿지
 > **여기서도 한 번 틀렸다.** 첫 판의 태그 매핑이 `★변별력 최고` 처럼 **뒤에 수식어가 붙은 표시**를
 > 잘라 내지 못해 `변별력` 태그가 11장 전부 빠졌다. 생성물은 눈으로 보면 그럴듯해서 놓치기 쉽다 —
 > 태그 분포를 세어 보고 나서야 발견했다.
+
+### 1-4. `docs` 잡의 세 번째 검사 — 키워드 시트의 누락과 근거 id (2026-09-06)
+
+`manuscripts/키워드-시트/*.md`(여덟 세트 740문항)는 플래시카드와 달리 **생성물이 아니다** — 답변에서 키워드를
+고르는 일은 기계로 할 수 없어 손으로 뽑았다. 그래서 `--check` 로 재생성해 비교할 수 없고, 대신
+[`scripts/check-keyword-sheets.py`](../scripts/check-keyword-sheets.py) 가 **기계로 판정 가능한 것만** 본다.
+
+```bash
+./scripts/check-keyword-sheets.py          # 8장 전부 대조
+./scripts/check-keyword-sheets.py --quiet  # 문제만 출력 (CI 가 돌린다)
+```
+
+1. **누락** — 원문 Part 파일의 `### Qn.` 이 시트의 `| n |` 행으로 전부 있는가.
+2. **유령 번호** — 시트(함정 표·📌 목록 포함)에 원문에 없는 Q 번호가 있는가.
+3. **허구 근거 id** — 시트가 ✅ 로 적은 케이스 id 가 실제 `VerificationCase.id()` 에 있는가.
+   **없는 id 를 적으면 "검증한 척"이 된다**(`docs/00` §8). 저장소의 id 131개를 소스에서 긁어 대조한다.
+
+**키워드가 답변을 잘 요약했는지는 검사하지 않는다** — 그건 이 스크립트가 할 수 있는 척하면 안 되는 일이다.
+첫 실행 결과는 누락 0 · 유령 0 · 허구 id 0 이었고, `Q1-Q200.md`(사용자 제공)도 200문항이 전부 있었다.
 
 ## 2. EC2 프리티어 설정 절차 (한 번만)
 

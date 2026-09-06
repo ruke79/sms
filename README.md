@@ -142,6 +142,7 @@ Compact Strings 는 맞았고, **"C2 를 Graal 이 대체한다"·`jaotc` 확대
 | [`spring-면접/`](manuscripts/spring-면접/) | Spring Boot 145문항 — [README](manuscripts/spring-면접/README.md) · [**필수-키노트**](manuscripts/spring-면접/필수-키노트.md) · [Part1](manuscripts/spring-면접/Part1.md) [2](manuscripts/spring-면접/Part2.md) [3](manuscripts/spring-면접/Part3.md) [4](manuscripts/spring-면접/Part4.md) [5](manuscripts/spring-면접/Part5.md) |
 | [**`면접-용어-정의.md`**](manuscripts/면접-용어-정의.md) | 위 290문항에 나오는 **용어 사전** — 한국어 정의 + 日本語 표기 + 나오는 문항·케이스 id |
 | [**`플래시카드/`**](manuscripts/플래시카드/README.md) | 일곱 세트의 **필수(S급) 86장** — 앞면 일본어 질문 / 뒷면 일본어 한 문장. Anki 로 바로 가져오는 TSV |
+| [**`키워드-시트/`**](manuscripts/키워드-시트/README.md) | 여덟 세트 **740문항 전부**를 세트당 한 문서에 — 문항마다 키워드 한 줄, 🔴 필수, ✅ 실행 근거 id, ▶ 튜토리얼 레슨. [Q1-Q200](manuscripts/키워드-시트/Q1-Q200.md) · [java](manuscripts/키워드-시트/java.md) · [spring](manuscripts/키워드-시트/spring.md) · [python](manuscripts/키워드-시트/python.md) · [javascript](manuscripts/키워드-시트/javascript.md) · [db](manuscripts/키워드-시트/db.md) · [kafka](manuscripts/키워드-시트/kafka.md) · [kubernetes](manuscripts/키워드-시트/kubernetes.md) |
 | [`python-면접/`](manuscripts/python-면접/README.md) | Python 50문항 — [Part1](manuscripts/python-면접/Part1.md) 언어·자료구조 · [Part2](manuscripts/python-면접/Part2.md) 메모리·성능·실무 |
 | [`javascript-면접/`](manuscripts/javascript-면접/README.md) | JavaScript 50문항 — [Part1](manuscripts/javascript-면접/Part1.md) 언어 핵심 · [Part2](manuscripts/javascript-면접/Part2.md) 브라우저·Node·실무 |
 | [`db-면접/`](manuscripts/db-면접/README.md) | DB 50문항 — [Part1](manuscripts/db-면접/Part1.md) 인덱스·트랜잭션 · [Part2](manuscripts/db-면접/Part2.md) 운영·확장·설계. **24문항에 `DB-*` 실행 근거** |
@@ -613,7 +614,10 @@ interview-verify-lab/
 └── manuscripts/                      # 대조 대상인 답변 원고 자체 (Q1~Q200)
     ├── 원본/                          # 받은 그대로 (Part 3~6 은 PDF 추출 .txt)
     ├── 수정본/                        # 지적 8건·보강 9건 반영 — 사실관계 기준
-    └── 회화체/                        # 수정본을 말투만 바꾼 판 (Part 1~11 완료)
+    ├── 회화체/                        # 수정본을 회화체로 다시 쓰고 1분 분량으로 줄인 판 (Part 1~11 완료)
+    ├── java-면접/ spring-면접/ …      # 주제별 면접 세트 일곱 (각각 Part 파일 + 필수-키노트)
+    ├── 플래시카드/                     # S급 86장 TSV (키노트에서 생성)
+    └── 키워드-시트/                    # 여덟 세트 740문항 키워드 표 (세트당 한 문서)
 ```
 
 
