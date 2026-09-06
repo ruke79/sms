@@ -64,7 +64,7 @@
 | 40 | 다른 전파 옵션 | `SUPPORTS` / `MANDATORY`(없으면 예외 = 의도 표명) / `NOT_SUPPORTED` / `NEVER` / `NESTED`(세이브포인트) · 실무는 거의 `REQUIRED`·`REQUIRES_NEW` |
 | 41 | 격리 수준 | RU(더티 리드) / RC / RR(재읽기 일관) / SERIALIZABLE · 기본값 사용 · **PostgreSQL·Oracle = RC, MySQL = RR → DB 옮기면 동작 변화** |
 | 42 🔴 | 어떤 예외에 롤백 | 기본 = `RuntimeException`·`Error` 만 · **체크 예외는 롤백 안 하고 커밋** · `IOException` 던졌는데 데이터 남음 · `rollbackFor` · 처음부터 런타임으로 감쌈 ✅`SPRING-04` ▶4-2·4-3 |
-| 43 | `catch` 하면 롤백은 | 삼키면 프록시까지 안 가서 **커밋** · 단 안쪽 `REQUIRED` 가 rollback-only 표시 → 바깥이 커밋하려 하면 `UnexpectedRollbackException` ▶4-4·4-7 |
+| 43 | `catch` 하면 롤백은 | 삼키면 프록시까지 안 가서 **커밋** · 단 **다른 빈의 `@Transactional` 을 불렀다면** 그쪽이 "되돌려라" 표시를 찍어 놔서 커밋 순간 `UnexpectedRollbackException` · **없던 일로 만들 수 있는 건 자기 메서드 안에서 난 예외뿐** ▶4-4·4-7 |
 | 44 | `readOnly = true` | JPA 플러시 `MANUAL` + 스냅샷 없음 → 가벼움 · 레플리카 라우팅 표식 · **쓰기를 막는 보장은 아님** |
 | 45 🔴 | 트랜잭션 안 외부 API | 피한다 · 상대 느리면 **커넥션 계속 점유 → 풀 고갈 → 전체 정지** · 함께 롤백 불가 · **커밋 후 이벤트** or Outbox ▶4-8 |
 | 46 | 트랜잭션 범위 | 서비스 계층(여러 리포지토리를 업무 단위로) · 컨트롤러면 뷰 렌더링까지 · **필요 최소한**, 단 업무상 한 덩어리 유지 |
@@ -200,7 +200,7 @@
 | 35 | 같은 클래스 안에서 불러도 `@Transactional` 이 걸린다 | 자기 호출은 프록시를 안 거친다 ✅`SPRING-01` ▶3-2·4-6 |
 | 36 | `private` 에 붙이면 에러가 난다 | 에러 없이 조용히 무시된다 |
 | 42 | 체크 예외도 롤백된다 | 기본은 런타임·`Error` 만. 체크 예외는 커밋 ✅`SPRING-04` ▶4-2 |
-| 43 | 예외를 `catch` 하면 안전하게 커밋된다 | 안쪽 `REQUIRED` 가 rollback-only 면 `UnexpectedRollbackException` ▶4-4 |
+| 43 | 예외를 `catch` 하면 안전하게 커밋된다 | 다른 빈의 `@Transactional` 이 실패한 거라면 `UnexpectedRollbackException` ▶4-7 |
 | 45 | 트랜잭션 안에서 외부 API 를 불러도 된다 | 커넥션 점유 → 풀 고갈 ▶4-8 |
 | 48 | `@Async` 가 트랜잭션을 이어받는다 | `ThreadLocal` 이라 끊긴다 ▶7-6 |
 | 51 | 테스트 `@Transactional` 이면 다 검증된다 | 별개 트랜잭션 문제·`AFTER_COMMIT` 리스너를 놓친다 |
