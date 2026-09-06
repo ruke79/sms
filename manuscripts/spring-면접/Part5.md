@@ -217,13 +217,13 @@ ERROR 는 사람이 대응해야 할 것, WARN 은 지금은 동작하지만 주
 
 MockMvc はサーバーを起動せず、DispatcherServlet の内部を直接呼びます。速いですが、実際のHTTP通信は経由しません。
 
-`RANDOM_PORT` は実際にサーバーを立てて `TestRestTemplate` などで叩きます。フィルタやシリアライズを含めた**本物の経路**を確認できますが遅いです。基本はMockMvcで、通信そのものが検証対象のときだけ後者を使います。
+`RANDOM_PORT` は実際にサーバーを立てて `TestRestTemplate` などで叩きます。フィルタやシリアライズを含めた**本物の経路**を確認できますが遅いです。基本はMockMvcで、通信そのものが検証対象のときだけ `RANDOM_PORT` を使います。
 
 **🇰🇷 답변**
 
 MockMvc 는 서버를 띄우지 않고 DispatcherServlet 내부를 직접 호출합니다. 빠르지만 실제 HTTP 통신은 거치지 않습니다.
 
-`RANDOM_PORT` 는 실제로 서버를 띄워 `TestRestTemplate` 등으로 호출합니다. 필터와 직렬화를 포함한 **진짜 경로**를 확인할 수 있지만 느립니다. 기본은 MockMvc 로 하고, 통신 자체가 검증 대상일 때만 후자를 씁니다.
+`RANDOM_PORT` 는 실제로 서버를 띄워 `TestRestTemplate` 등으로 호출합니다. 필터와 직렬화를 포함한 **진짜 경로**를 확인할 수 있지만 느립니다. 기본은 MockMvc 로 하고, 통신 자체가 검증 대상일 때만 `RANDOM_PORT` 를 씁니다.
 
 ---
 

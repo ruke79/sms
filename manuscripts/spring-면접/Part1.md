@@ -130,15 +130,15 @@ Spring Boot 2.6 부터는 기본으로 금지됐습니다. 우회 설정을 넣�
 
 **🇯🇵 回答**
 
-インスタンス生成、依存性の注入、`Aware` 系のコールバック、`BeanPostProcessor` の前処理、`@PostConstruct` と初期化メソッド、後処理、そして利用、最後に破棄時の `@PreDestroy` という流れです。
+大きく三段階です。まず生成と注入、次に初期化、最後に破棄です。細かくは、インスタンス生成、依存性の注入、`Aware` 系のコールバック、`BeanPostProcessor` の前処理、`@PostConstruct`、後処理、そして利用、最後に `@PreDestroy` という流れです。
 
-実務で使うのは `@PostConstruct` と `@PreDestroy` くらいですが、AOPのプロキシが被さるのが `BeanPostProcessor` の後処理の段階だと知っていると、プロキシ関連の挙動が理解しやすくなります。
+実務で使うのは `@PostConstruct` と `@PreDestroy` くらいです。ただ、AOPのプロキシが被さるのが `BeanPostProcessor` の後処理の段階だと知っていると、プロキシ関連の挙動が理解しやすくなります。
 
 **🇰🇷 답변**
 
-인스턴스 생성, 의존성 주입, `Aware` 계열 콜백, `BeanPostProcessor` 의 전처리, `@PostConstruct` 와 초기화 메서드, 후처리, 그리고 사용, 마지막으로 소멸 시 `@PreDestroy` 순서입니다.
+크게 세 단계입니다. 먼저 생성과 주입, 다음이 초기화, 마지막이 소멸입니다. 자세히는 인스턴스 생성, 의존성 주입, `Aware` 계열 콜백, `BeanPostProcessor` 의 전처리, `@PostConstruct`, 후처리, 그리고 사용, 마지막으로 `@PreDestroy` 순서입니다.
 
-실무에서 쓰는 것은 `@PostConstruct` 와 `@PreDestroy` 정도지만, AOP 프록시가 씌워지는 것이 `BeanPostProcessor` 의 후처리 단계라는 것을 알면 프록시 관련 동작을 이해하기 쉬워집니다.
+실무에서 쓰는 것은 `@PostConstruct` 와 `@PreDestroy` 정도입니다. 다만 AOP 프록시가 씌워지는 것이 `BeanPostProcessor` 의 후처리 단계라는 것을 알면 프록시 관련 동작을 이해하기 쉬워집니다.
 
 ---
 
@@ -249,13 +249,13 @@ Spring Boot 2.6 부터는 기본으로 금지됐습니다. 우회 설정을 넣�
 
 **🇯🇵 回答**
 
-同じ型のBeanを自分で定義するだけです。多くの自動構成は `@ConditionalOnMissingBean` が付いているので、**自分のBeanがあればそちらが優先されます**。
+同じ型のBeanを自分で定義するだけです。多くの自動構成は `@ConditionalOnMissingBean` が付いているので、**自分のBeanがあれば自動構成のほうが引き下がります**。
 
 それでも効かない場合は `@SpringBootApplication(exclude = ...)` で特定の自動構成を外します。何が効いているかを調べるには、`--debug` で起動して条件評価レポートを見るのが確実です。
 
 **🇰🇷 답변**
 
-같은 타입의 빈을 직접 정의하기만 하면 됩니다. 대부분의 자동 구성에는 `@ConditionalOnMissingBean` 이 붙어 있어 **자기 빈이 있으면 그쪽이 우선됩니다.**
+같은 타입의 빈을 직접 정의하기만 하면 됩니다. 대부분의 자동 구성에는 `@ConditionalOnMissingBean` 이 붙어 있어 **자기 빈이 있으면 자동 구성 쪽이 물러납니다.**
 
 그래도 안 되면 `@SpringBootApplication(exclude = ...)` 로 특정 자동 구성을 제외합니다. 무엇이 적용됐는지 조사하려면 `--debug` 로 기동해 조건 평가 리포트를 보는 것이 확실합니다.
 
@@ -319,13 +319,13 @@ Spring Boot 2.6 부터는 기본으로 금지됐습니다. 우회 설정을 넣�
 
 値が一つか二つなら `@Value`、関連する設定のまとまりなら `@ConfigurationProperties` です。
 
-後者は型安全で、`@Validated` を付ければ起動時に検証できます。設定ミスをアプリ起動の時点で落とせるのが大きな利点です。IDE の補完も効くので、設定項目が増えるほど有利になります。
+`@ConfigurationProperties` は型安全で、`@Validated` を付ければ起動時に検証できます。設定ミスをアプリ起動の時点で落とせるのが大きな利点です。IDE の補完も効くので、設定項目が増えるほど有利になります。
 
 **🇰🇷 답변**
 
 값이 한두 개면 `@Value`, 관련된 설정의 묶음이면 `@ConfigurationProperties` 입니다.
 
-후자는 타입 안전하고 `@Validated` 를 붙이면 기동 시에 검증할 수 있습니다. 설정 실수를 앱 기동 시점에 실패시킬 수 있는 것이 큰 이점입니다. IDE 자동완성도 되므로 설정 항목이 늘수록 유리해집니다.
+`@ConfigurationProperties` 는 타입 안전하고, `@Validated` 를 붙이면 기동 시에 검증할 수 있습니다. 설정 실수를 앱 기동 시점에 실패시킬 수 있는 것이 큰 이점입니다. IDE 자동완성도 되므로 설정 항목이 늘수록 유리해집니다.
 
 ---
 
