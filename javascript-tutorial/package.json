@@ -1,0 +1,11 @@
+{
+  "name": "javascript-tutorial",
+  "private": true,
+  "description": "실행되는 자바스크립트 튜토리얼 — 레슨 하나가 테스트 하나. 의존 0 (Node 22 내장 러너)",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --expose-gc --test \"lessons/*.test.js\"",
+    "test:one": "node --expose-gc --test"
+  }
+}

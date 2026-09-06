@@ -9,6 +9,7 @@
 # 케이스라, 그것을 재려면 remote-network.yml 을 쓴다(docs/02 §9-6).
 #
 # java-tutorial(54건)·spring-tutorial(52건)은 인프라가 필요 없어 별도 잡으로 먼저 돌린다.
+# javascript-tutorial(58건)은 JVM 이 아니라 Node 22 로 돈다 — js-tutorial 잡, 의존 설치 없음.
 #
 # verify-labs-cloudnative(19건)는 JDK 25 전용이라 별도 잡(cloudnative)에서 setup-java 로 25 를 깔고 돌린다 —
 # 인프라가 필요 없고, verify 잡의 `./gradlew test` 에서는 제외한다(-x). 25 가 없으면 그 모듈의 테스트는 skip 이다.
@@ -111,6 +112,22 @@ jobs:
           name: jmh-result
           path: verify-labs-jmh/build/reports/jmh-result.json
           if-no-files-found: warn
+
+  # 자바스크립트 튜토리얼 — Node 22 내장 러너만 쓰고 npm 의존이 0 이라 install 단계가 없다.
+  # 7-4·7-5 의 GC 관측을 위해 --expose-gc 를 켠다(package.json 의 test 스크립트 안).
+  js-tutorial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 자바스크립트 튜토리얼 (8레슨 58건)
+        working-directory: javascript-tutorial
+        run: npm test
 
   # 튜토리얼 두 모듈은 인프라가 필요 없다. 그래서 별도 잡으로 먼저 돌린다 —
   # compose 기동을 기다리지 않으므로 몇 분 안에 결과가 나온다.

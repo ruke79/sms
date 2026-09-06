@@ -8,3 +8,6 @@ out/
 
 # scripts/random-ports.sh 가 만드는 로컬 포트 설정 — 장비마다 다르므로 커밋하지 않는다
 .env
+
+# javascript-tutorial 은 의존이 0 이라 생길 일이 없지만, 실수로 install 해도 커밋되지 않게
+node_modules/
