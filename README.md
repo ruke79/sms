@@ -34,9 +34,11 @@
   (자바 **7레슨 54개** + 스프링 **7레슨 52개**, 전부 통과). 환경에 좌우되는 값은 `observe` 로
   출력만 하고 단정하지 않는다 — `expect`/`expectFlaky` 와 같은 원칙. 스프링 쪽은 DB 없이
   트랜잭션 '경계'까지 검증한다(기록용 트랜잭션 매니저, [`spring-tutorial/README.md`](spring-tutorial/README.md) §2).
-- **[`javascript-tutorial/`](javascript-tutorial/README.md)** — 같은 발상의 자바스크립트 판. **8레슨 58건**, Node 22 내장 러너만 써서
-  **npm 의존 0**. 이벤트 루프의 실행 순서, `await` 를 빠뜨리면 프로세스가 죽는 것, 프로토타입 오염, 스트림 백프레셔,
-  워커 스레드까지 — 시간을 재지 않고 **순서·횟수·개수**로만 단정한다. 만들다 틀린 것 5건을 레슨과 README 에 남겼다.
+- **[`javascript-tutorial/`](javascript-tutorial/README.md)** — 같은 발상의 자바스크립트 판. **16레슨 114건**, Node 22 내장 러너만 써서
+  **npm 의존 0**. 1부(레슨 1~8, 58건)는 언어 기제 — 이벤트 루프 순서, `await` 누락, 프로토타입 오염, 백프레셔.
+  **2부(레슨 9~16, 56건)는 실무 패턴**이다 — 로컬 HTTP 서버를 띄워 놓고 타임아웃·재시도·**멱등 키**·ETag·
+  요청 컨텍스트(`AsyncLocalStorage`)·graceful shutdown 을 돌려 본다. 시간을 재지 않고 **순서·횟수·개수·상태 코드**로만
+  단정한다. 만들다 틀린 것 **9건**을 레슨과 README 에 남겼다.
 - 만드는 과정에서 나온 문제와 해결(23건)은 [`docs/05-개발-중-문제와-해결.md`](docs/05-개발-중-문제와-해결.md)
 - **외부 기준 한 권을 요약해 함께 뒀다** — [`notes/java-performance/`](notes/java-performance/README.md) 에
   *Java Performance: The Definitive Guide* 의 **장별 상세 요약 13개**(2~12장 + 부록 A, 7,600여 줄).
@@ -163,7 +165,7 @@ Compact Strings 는 맞았고, **"C2 를 Graal 이 대체한다"·`jaotc` 확대
 |---|---|
 | [`java-tutorial/README.md`](java-tutorial/README.md) | 실행되는 자바 튜토리얼 7레슨 54건 — 레슨 목록·`observe` 규칙·정직한 고지 |
 | [`spring-tutorial/README.md`](spring-tutorial/README.md) | 실행되는 스프링 튜토리얼 7레슨 52건 — **§2 트랜잭션 레슨에 DB 가 없는 이유**, §4 만들다 밟은 함정 6건 |
-| [`javascript-tutorial/README.md`](javascript-tutorial/README.md) | 실행되는 자바스크립트 튜토리얼 8레슨 58건(중급~고급) — 이벤트 루프·Promise·프로토타입 오염·스트림·워커, **첫 판에서 틀린 것 5건** |
+| [`javascript-tutorial/README.md`](javascript-tutorial/README.md) | 실행되는 자바스크립트 튜토리얼 16레슨 114건 — 1부 언어 기제(이벤트 루프·Promise·프로토타입 오염·스트림), **2부 실무 패턴**(타임아웃·재시도·멱등 키·캐시·`AsyncLocalStorage`·graceful shutdown), **첫 판에서 틀린 것 9건** |
 | [`verify-labs-cloudnative/README.md`](verify-labs-cloudnative/README.md) | 2판 명제 19건을 **JDK 25** 에서 — 설계(Spring 없음), 케이스 표, **첫 판에서 틀린 것 5건**, 안 한 것 |
 | [`verify-labs-jmh/README.md`](verify-labs-jmh/README.md) | JMH 3건 — 실행법·결과·판정(`final`·람다 차이 없음, int/long 은 확인 못 함) |
 
@@ -208,7 +210,7 @@ cat verify-labs-kafka/build/reports/verification-kafka.md
 ./gradlew :java-tutorial:test                            # 자바 튜토리얼 7레슨 54건
 ./gradlew :spring-tutorial:test                          # 스프링 튜토리얼 7레슨 52건
 ./gradlew :java-tutorial:test --tests '*Lesson04*'       # 튜토리얼 레슨 하나만
-(cd javascript-tutorial && npm test)                     # 자바스크립트 튜토리얼 8레슨 58건 (Node 22, 설치 없음)
+(cd javascript-tutorial && npm test)                     # 자바스크립트 튜토리얼 16레슨 114건 (Node 22, 설치 없음)
 ```
 
 출력은 이런 모양이다.
@@ -607,10 +609,12 @@ interview-verify-lab/
 ├── spring-tutorial/                  # 실행되는 스프링 튜토리얼 7레슨 52건 (spring-면접 과 짝)
 │   └── io/webboy/springtutorial/
 │       └── Lesson01_DiContainer ~ Lesson07_CacheEventAsync
-├── javascript-tutorial/              # 실행되는 자바스크립트 튜토리얼 8레슨 58건 (javascript-면접 과 짝, Node 22)
+├── javascript-tutorial/              # 실행되는 자바스크립트 튜토리얼 16레슨 114건 (javascript-면접 과 짝, Node 22)
 │   └── lessons/
-│       ├── lesson01_scope-closure-this ~ lesson08_streams-workers  (.test.js)
+│       ├── lesson01_scope-closure-this ~ lesson08_streams-workers  (1부 — 언어 기제, 58건)
+│       ├── lesson09_http-client ~ lesson16_server-ops              (2부 — 실무 패턴, 56건)
 │       ├── lesson.js                 # fact / observe / lesson
+│       ├── testserver.js             # 127.0.0.1 임의 포트 HTTP 서버 (외부 네트워크 안 씀)
 │       └── fixtures/                 # 자식 프로세스·워커·모듈 픽스처
 └── manuscripts/                      # 대조 대상인 답변 원고 자체 (Q1~Q200)
     ├── 원본/                          # 받은 그대로 (Part 3~6 은 PDF 추출 .txt)

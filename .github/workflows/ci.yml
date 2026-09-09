@@ -9,7 +9,7 @@
 # 케이스라, 그것을 재려면 remote-network.yml 을 쓴다(docs/02 §9-6).
 #
 # java-tutorial(54건)·spring-tutorial(52건)은 인프라가 필요 없어 별도 잡으로 먼저 돌린다.
-# javascript-tutorial(58건)은 JVM 이 아니라 Node 22 로 돈다 — js-tutorial 잡, 의존 설치 없음.
+# javascript-tutorial(114건)은 JVM 이 아니라 Node 22 로 돈다 — js-tutorial 잡, 의존 설치 없음.
 #
 # verify-labs-cloudnative(19건)는 JDK 25 전용이라 별도 잡(cloudnative)에서 setup-java 로 25 를 깔고 돌린다 —
 # 인프라가 필요 없고, verify 잡의 `./gradlew test` 에서는 제외한다(-x). 25 가 없으면 그 모듈의 테스트는 skip 이다.
@@ -130,7 +130,7 @@ jobs:
         with:
           node-version: '22'
 
-      - name: 자바스크립트 튜토리얼 (8레슨 58건)
+      - name: 자바스크립트 튜토리얼 (16레슨 114건)
         working-directory: javascript-tutorial
         run: npm test
 

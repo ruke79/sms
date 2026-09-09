@@ -19,7 +19,7 @@ CI 는 "빌드가 된다"가 아니라 **"명제가 이 환경에서도 재현�
 |---|---|---|---|
 | `docs` | 커밋마다 | **문서 링크·앵커·도달성 검사**(`scripts/check-links.py`) + **플래시카드 최신성 검사**(`scripts/make-flashcards.py --check`) + **키워드 시트 누락·근거 id 검사**(`scripts/check-keyword-sheets.py`) — 몇 초 | 없음 |
 | `tutorial` | 커밋마다 | java-tutorial 54건 · spring-tutorial 52건 | 없음 |
-| `js-tutorial` | 커밋마다 | javascript-tutorial 58건 — `setup-node` 로 Node 22, **npm 의존이 0 이라 install 단계 없음** | 없음 |
+| `js-tutorial` | 커밋마다 | javascript-tutorial 114건(1부 언어 58 + 2부 실무 56) — `setup-node` 로 Node 22, **npm 의존이 0 이라 install 단계 없음**. 2부가 띄우는 HTTP 서버는 전부 `127.0.0.1` 임의 포트라 러너 밖으로 안 나간다 | 없음 |
 | `cloudnative` | 커밋마다 | 2판 명제 19건 — `setup-java` 로 **JDK 25** 를 깔고 그 모듈만 | 없음 |
 | `verify` | 커밋마다 | compose 로 실물 인프라를 띄우고 나머지 114건 (`-x :verify-labs-cloudnative:test`) | PostgreSQL·Kafka·Redis |
 | `jmh` | **수동만** (`workflow_dispatch` 입력 `run_jmh=true`) | JMH 벤치마크 3건, 결과는 아티팩트로만 | 없음 |
